@@ -1,6 +1,7 @@
 package com.xcl.security.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xcl.security.dto.User;
 import com.xcl.security.dto.UserQueryCondition;
 import com.xcl.security.exception.UserNotExistException;
@@ -10,6 +11,8 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -38,7 +41,10 @@ public class UserConroller {
 //        users.add(new User());
 //        return users;
 //    }
-
+    @GetMapping("/me")
+    public Object getCurrentUser(@AuthenticationPrincipal UserDetails userDetails){
+        return userDetails;
+    }
     @GetMapping
     @JsonView(User.UserSimpleView.class)
     @ApiOperation("查询用户服务")
